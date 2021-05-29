@@ -1,0 +1,23 @@
+
+    .btn{
+        width:200px;
+
+        }
+        body{
+            background-color: lightblue;
+        }
+        .complete{
+            margin-bottom: 50px;
+            margin-top: 50px;
+        }
+        .inside{
+            background-color: white !important;
+        }
+        .navbar{
+            height: 100px;
+        }
+        .intro{
+            color: blue;
+            text-align: center;
+
+        }
