@@ -3,8 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var { Magic } = require('magic-sdk');
-const { MagicAdmin } = require('@magic-sdk/admin');
+// var { Magic } = require('magic-sdk');
+// const { MagicAdmin } = require('@magic-sdk/admin');
+const nodemailer = require("nodemailer");
+const passport = require("passport");
+const MagicLinkStrategy = require('passport-magic-link').Strategy;
 
 var debug = require('debug')('expressapp:server');
 var http = require('http');
@@ -25,17 +28,35 @@ app.use('*/js', express.static('public/js'));
 app.use('*/scss', express.static('public/scss'));
 app.use('*/fonts', express.static('public/fonts'));
 app.use('*/images', express.static('public/images'));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
+passport.use(new MagicLinkStrategy({
+  secret: 'sk_live_D4A9E46A11FB1C06',
+  userFields: ['name', 'email'],
+  tokenField: 'token'
+}, (user, token) => {
+    console.log("Authenticating:", user, token)
+    return MailService.sendMail({
+    to: user.email,
+    token})
+  }, (user) => {
+  console.log("Authenticated:", user);
+  return User.findOrCreate({email: user.email, name: user.name})
+}));
+
+
 // Setting URL redirections
-app.get('/', function(req, res, next) {
+app.get('/', function(req, res) {
   res.render('index');
 });
-app.get('/donate', function(req, res, next) {
+
+app.get('/donate', passport.authenticate('magiclink', { action : 'acceptToken', allowReuse:true, failureRedirect:"/signin" }), function(req, res, next) {
   res.render('donorForm');
 });
 app.get('/signin', function(req, res, next) {
@@ -46,11 +67,12 @@ app.post('/signin', function(req, res, next) {
   userMail = req.body.email;
   console.log(req.body, userMail)
   
-  const magic = new Magic("pk_live_5FF3CB606F042138");
+  // const magic = new Magic("pk_live_5FF3CB606F042138");
   // const magicAdmin = new MagicAdmin("sk_live_D4A9E46A11FB1C06");
 
   try {
-    magic.auth.loginWithMagicLink({ email: userMail });
+    // magic.auth.loginWithMagicLink({ email: userMail });
+
   } catch (error) {
     console.log(error);
   }
