@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var Magic = require('magic-sdk');
+var { Magic } = require('magic-sdk');
 const { MagicAdmin } = require('@magic-sdk/admin');
 
 var debug = require('debug')('expressapp:server');
@@ -44,9 +44,18 @@ app.get('/signin', function(req, res, next) {
 app.post('/signin', function(req, res, next) {
 
   userMail = req.body.email;
+  console.log(req.body, userMail)
   
   const magic = new Magic("pk_live_5FF3CB606F042138");
-  const magicAdmin = new MagicAdmin("sk_live_D4A9E46A11FB1C06")
+  // const magicAdmin = new MagicAdmin("sk_live_D4A9E46A11FB1C06");
+
+  try {
+    magic.auth.loginWithMagicLink({ email: userMail });
+  } catch (error) {
+    console.log(error);
+  }
+
+  res.sendStatus(200);
 
 });
 
