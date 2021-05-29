@@ -3,11 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+// var session = require('express-session');
 // var { Magic } = require('magic-sdk');
 // const { MagicAdmin } = require('@magic-sdk/admin');
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
+// const MagicLinkStrategy = require('passport-magic-link').Strategy;
 const passport = require("passport");
-const MagicLinkStrategy = require('passport-magic-link').Strategy;
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 var debug = require('debug')('expressapp:server');
 var http = require('http');
@@ -22,6 +24,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(session({
+//   secret: 'secret012',
+// }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('*/css', express.static('public/css'));
 app.use('*/js', express.static('public/js'));
@@ -36,32 +41,45 @@ app.use(passport.session());
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
-passport.use(new MagicLinkStrategy({
-  secret: 'sk_live_D4A9E46A11FB1C06',
-  userFields: ['name', 'email'],
-  tokenField: 'token'
-}, (user, token) => {
-    console.log("Authenticating:", user, token)
-    return MailService.sendMail({
-    to: user.email,
-    token})
-  }, (user) => {
-  console.log("Authenticated:", user);
-  return User.findOrCreate({email: user.email, name: user.name})
-}));
+// passport.use(new MagicLinkStrategy({
+//   secret: '...',
+//   userFields: ['name', 'email'],
+//   tokenField: 'token'
+// }, (user, token) => {
+//     return MailService.sendMail({
+//     to: user.email,
+//     token})
+//   }, (user) => {
+//   return User.findOrCreate({email: user.email, name: user.name})
+// }));
 
+passport.use(new GoogleStrategy({
+    clientID: new Buffer.from("NDA4MTgyOTcyMDE4LWtlbGY0djExYzRyZmUydnA0aGhqMjY1dDE5MHZkZzg2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29t", "base64").toString(),
+    clientSecret: new Buffer.from("bk95b1lFa2NMME9XOU5wblQyaGFzMVNn", "base64").toString(),
+    callbackURL: "/donate"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 // Setting URL redirections
 app.get('/', function(req, res) {
   res.render('index');
 });
 
-app.get('/donate', passport.authenticate('magiclink', { action : 'acceptToken', allowReuse:true, failureRedirect:"/signin" }), function(req, res, next) {
-  res.render('donorForm');
+app.get('/donate', function(req, res, next) {
+  if (req.query && req.query.code && req.query.scope)
+    res.render('donorForm');
+  else 
+    res.redirect('signin');
 });
-app.get('/signin', function(req, res, next) {
-  res.render('signin-form');
+app.get('/signin', passport.authenticate('google', { scope: ['profile'] }), function(req, res, next) {
+  res.render('signin-form'); 
 });
+
 app.post('/signin', function(req, res, next) {
 
   userMail = req.body.email;
