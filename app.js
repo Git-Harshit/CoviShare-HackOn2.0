@@ -1,8 +1,10 @@
-var createError = require('http-errors');
+// var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var Magic = require('magic-sdk');
+const { MagicAdmin } = require('@magic-sdk/admin');
 
 var debug = require('debug')('expressapp:server');
 var http = require('http');
@@ -18,6 +20,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('*/css', express.static('public/css'));
+app.use('*/js', express.static('public/js'));
+app.use('*/scss', express.static('public/scss'));
+app.use('*/fonts', express.static('public/fonts'));
+app.use('*/images', express.static('public/images'));
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
@@ -28,8 +35,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res, next) {
   res.render('index');
 });
-app.get('/example', function(req, res, next) {
-  res.render('example-subpage');
+app.get('/donate', function(req, res, next) {
+  res.render('donorForm');
+});
+app.get('/signin', function(req, res, next) {
+  res.render('signin-form');
+});
+app.post('/signin', function(req, res, next) {
+
+  userMail = req.body.email;
+  
+  const magic = new Magic("pk_live_5FF3CB606F042138");
+  const magicAdmin = new MagicAdmin("sk_live_D4A9E46A11FB1C06")
+
 });
 
 /* Get port from environment and store in Express. */
