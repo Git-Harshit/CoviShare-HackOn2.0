@@ -76,6 +76,11 @@ app.get('/donate', function(req, res, next) {
   else 
     res.redirect('signin');
 });
+
+app.get('/beneficiary', function(req, res, next) {
+  res.render('beneficiary');
+});
+
 app.get('/signin', passport.authenticate('google', { scope: ['profile'] }), function(req, res, next) {
   res.render('signin-form'); 
 });

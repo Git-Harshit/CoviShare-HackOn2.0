@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <!-- Including Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
+  <!-- Including Montserrat, Ubuntu and Roboto Fonts via Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Ubuntu&family=Roboto&display=swap"
+    rel="stylesheet">
+  <!-- Including Bootstrap CSS and JS Bundle via its official CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+
+  <title>CoviShare - Beneficiary</title>
+
+  <link rel="stylesheet" href="fonts/icomoon/style.css" />
+
+  <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <section class="complete">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">CoviShare</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks"
+          aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarLinks">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="window.scrollTo(0,document.body.scrollHeight);">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="col text-center m-auto p-4" style="background: #0cc6; border-radius: 1em;">
+        <br>
+        <p class="intro py-5">Search for your necessity! We'll try our best to gather it if it is available. <small>
+            Where there's a hope, there's a way! </small></p>
+      </div>
+      <form class="d-flex w-75 w-sm-50 m-auto position-relative" style="top:-2em;">
+        <input class="form-control me-2 text-center" type="search" placeholder="Describe your requirement (use standard keywords for better results)" aria-label="Search">
+        <button class="btn btn-primary" type="submit"><i class="icomoon icon-search"></i> Search</button>
+      </form>
+      
+      <div class="items-available mt-5">
+        <div class="card text-center py-5">
+          <p id="result-blank" class="text-muted"> Please search to check for availability of your demand. </p>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="footer-16371">
+      <hr />
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-9 text-center">
+            <div class="footer-site-logo mb-4">
+              <a href="#">CoviShare</a>
+            </div>
+            <ul class="list-unstyled nav-links mb-5">
+              <li><a href="#">About</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+
+            <div class="social mb-4">
+              <h3>Stay in touch</h3>
+              <ul class="list-unstyled">
+                <li class="in">
+                  <a href="https://www.instagram.com"><span class="icon-instagram"></span></a>
+                </li>
+                <li class="fb">
+                  <a href="https://www.facebook.com"><span class="icon-facebook"></span></a>
+                </li>
+                <li class="tw">
+                  <a href="https://www.twitter.com"><span class="icon-twitter"></span></a>
+                </li>
+                <li class="pin">
+                  <a href="https://www.pinterest.com"><span class="icon-pinterest"></span></a>
+                </li>
+                <li class="dr">
+                  <a href="https://www.dribble.com"><span class="icon-dribbble"></span></a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="copyright">
+              <p class="mb-0">
+                <small>&copy; CoviShare. All Rights Reserved.</small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </section>
+
+  <script src="/js/beneficiary.js"></script>
+
+</body>
+
+</html>
